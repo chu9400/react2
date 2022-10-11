@@ -8,6 +8,7 @@ function App() {
   let [따봉, 따봉변경] = useState([0,10,100]);
   let [modal, setModal] = useState(false);
   let [change, setChange] = useState(0);
+  let [입력값, 입력값변경] = useState('');
 
   return (
     <div className="App">
@@ -16,16 +17,28 @@ function App() {
       </div>
 
       <div className="list">
-
           <button onClick={() => {
             let copy = [...글제목];
-
             글제목변경(copy.sort());
           }}>
             가나다순 정렬
           </button>
+      </div>
+      <div>
+        <input onChange={(e)=>{
+          입력값변경(e.target.value);
+          console.log(입력값);
+        }}>
+        </input>
 
- 
+        <button onClick={()=>{
+          let copy = [...글제목];
+          copy.push(입력값);
+          글제목변경(copy);
+        }}
+        >
+          글 발행
+        </button>
       </div>
       
     {
@@ -38,7 +51,8 @@ function App() {
             <h4>{a}</h4>
             <p>2월 17일 발행</p>
 
-            <span onClick={()=>{
+            <span onClick={(e)=>{
+              e.stopPropagation();//이벤트 버블링 막기
               let copy = [...따봉];
               copy[i] += 1;
               따봉변경(copy);
@@ -46,6 +60,18 @@ function App() {
             >
               좋아요 {따봉[i]}
             </span>
+
+            <button onClick={(e)=>{
+              let copy = [...글제목];
+              
+              console.log(copy[i]);
+              copy.splice(i, 1);
+              
+              글제목변경(copy);
+              e.stopPropagation();//이벤트 버블링 막기
+            }}>
+              글 삭제
+            </button>
           </div>
         )
         
